@@ -88,7 +88,7 @@ app.put("/api/account/:id/deposit", async (req, res) => {
   const id = req.params.id;
   const amount = req.body.amount;
   try {
-    if (ObjectId.isValid(id) && amount) {
+    if (ObjectId.isValid(id) && amount && amount >= 0) {
       // Validate the id and the amount
       const result = await accountsCollection.updateOne(
         { _id: new ObjectId(id) },
@@ -134,7 +134,7 @@ app.put("/api/account/:id/withdraw", async (req, res) => {
       });
       // If the account exists, check if the balance is enough to withdraw the amount
       if (account) {
-        if (account.balance >= amount) {
+        if (account.balance >= amount && amount >= 0) {
           // If the balance is enough, update the account balance by subtracting the amount using the MongoDB updateOne method and $inc in mongodb, works with numbers
           const result = await accountsCollection.updateOne(
             { _id: new ObjectId(id) },

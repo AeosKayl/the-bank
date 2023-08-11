@@ -4,6 +4,7 @@ const API_ACC = "/api/account/";
 const createAccountForm = document.getElementById("create-account-form");
 const accountsList = document.getElementById("accounts-list");
 const accountDetails = document.getElementById("account-details");
+const balanceInput = document.getElementById("balance");
 
 const FORM_MODES = {
   DEPOSIT: "deposit",
@@ -62,6 +63,12 @@ const handleTransaction = async (e) => {
   );
   const accountId = form.dataset.accid;
   const account = accounts.find((acc) => acc._id === accountId);
+
+  if (transactionAmount < 0) {
+    alert("A a a, almost forgot, no negative amounts are allowed!");
+    form.querySelector("#transaction-amount").value = "";
+    return;
+  }
 
   if (transactionType === FORM_MODES.DEPOSIT) {
     account.balance += transactionAmount;
@@ -146,6 +153,11 @@ async function createAccount(event) {
   try {
     const formData = new FormData(createAccountForm);
     const account = Object.fromEntries(formData.entries());
+    if (account.balance < 0) {
+      alert("A a a, almost forgot, no negative amounts are allowed!");
+      balanceInput.value = "";
+      return;
+    }
     const response = await fetch(API_ACCOUNTS, {
       method: "POST",
       headers: {
