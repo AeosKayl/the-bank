@@ -1,4 +1,4 @@
-/* Define some basic styles for all devices */
+/*  basic styles for all devices */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -33,7 +33,8 @@ h1 {
   font-size: 3rem;
 }
 
-h2 {
+h2,
+h3 {
   text-align: center;
 }
 
@@ -143,7 +144,7 @@ button:hover {
     transform: scale(
       1.1
     ); /* Make the button slightly larger when hovered over */
-    background-color: green; /* Change the background color when hovered over */
-    color: white; /* Change the text color when hovered over */
+    background-color: green;
+    color: white;
   }
 }

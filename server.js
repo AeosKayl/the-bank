@@ -89,6 +89,7 @@ app.put("/api/account/:id/deposit", async (req, res) => {
   const amount = req.body.amount;
   try {
     if (ObjectId.isValid(id) && amount) {
+      // Validate the id and the amount
       const result = await accountsCollection.updateOne(
         { _id: new ObjectId(id) },
         { $inc: { balance: amount } }
@@ -118,9 +119,9 @@ app.put("/api/account/:id/deposit", async (req, res) => {
     });
   }
 });
+
 // route to withdraw amount
 app.put("/api/account/:id/withdraw", async (req, res) => {
-  // Get the account id and the amount from the request parameters and body
   const id = req.params.id;
   const amount = req.body.amount;
   // Validate the id and the amount
@@ -134,7 +135,7 @@ app.put("/api/account/:id/withdraw", async (req, res) => {
       // If the account exists, check if the balance is enough to withdraw the amount
       if (account) {
         if (account.balance >= amount) {
-          // If the balance is enough, update the account balance by subtracting the amount using the MongoDB updateOne method
+          // If the balance is enough, update the account balance by subtracting the amount using the MongoDB updateOne method and $inc in mongodb, works with numbers
           const result = await accountsCollection.updateOne(
             { _id: new ObjectId(id) },
             { $inc: { balance: -amount } }
@@ -190,7 +191,6 @@ app.put("/api/account/:id/withdraw", async (req, res) => {
 
 // route for deleting an account by id
 app.delete("/api/account/:id/delete", async (req, res) => {
-  // Get the account id from the request parameter
   const id = req.params.id;
   // Validate the id
   if (ObjectId.isValid(id)) {
